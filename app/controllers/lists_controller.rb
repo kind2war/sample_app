@@ -24,12 +24,20 @@ class ListsController < ApplicationController
   # .all は、そのモデルがやり取りしているデータベースのテーブルに保存されている、すべてのレコードをまとめて取得するメソッド
   # インスタンス変数は、自由に命名できるが、今回は複数のListレコードが取得できるので複数形とした。
 
-  def show
+  def show #controllerでdatebaseからlistsテーブルに保存されているデータを１つだけ取得する
     @list = List.find(params[:id])
   end
 
   def edit
+    @list = List.find(params[:id])
   end
+
+  def update #更新機能のためのアクションボタンをつくる。
+    list = List.find(params[:id]) # showアクションにリダイレクトするために、引数には必ずidが必要になる。どのデータを詳細画面に表示させるのかを決定する。
+    list.update(list_params)
+    redirect_to list_path(list.id)
+  end
+
 
   private   #これは一種の境界線。「ここから下は、このcontrollerの中でしか呼び出せません」という意。
            #他のアクション（index,show,edit）を巻き込まないよう、一番下のendのすぐ上に書くこと。
