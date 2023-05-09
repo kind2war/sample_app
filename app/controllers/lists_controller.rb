@@ -12,8 +12,8 @@ class ListsController < ApplicationController
       #復習:インスタンス変数とローカル変数の違い
     #3.データをデータベースに保存するためのsaveメソッド実行
     list.save
-    #4.トップ画面へリダイレクト
-    redirect_to '/top'
+    #4.詳細画面へリダイレクト
+    redirect_to list_path(list.id)
   end # ここでcreateアクションの処理は終了！
 
   def index # 一覧画面用のアクション
@@ -25,6 +25,7 @@ class ListsController < ApplicationController
   # インスタンス変数は、自由に命名できるが、今回は複数のListレコードが取得できるので複数形とした。
 
   def show
+    @list = List.find(params[:id])
   end
 
   def edit

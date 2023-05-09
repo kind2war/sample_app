@@ -5,7 +5,9 @@
  <!--@lists.each と記述することで、Listレコードの数だけ繰り返し処理を行う。 -->
 
   <p>タイトル</p>
-  <span><%= list.title %></span>
+  <span>
+   <%= link_to list.title, list_path(list.id) %>
+  </span>
  <!--各レコードの内容は、listという変数に格納される。-->
  <!--list.[カラム名]と記述することで、レコードのカラムの内容が表示される。-->
 
