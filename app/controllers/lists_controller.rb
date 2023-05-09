@@ -16,7 +16,7 @@ class ListsController < ApplicationController
     redirect_to '/top'
   end # ここでcreateアクションの処理は終了！
 
-  def index　# 一覧画面用のアクション
+  def index # 一覧画面用のアクション
     @lists = List.all
   end
   # @～はインスタンス変数。ここで変数を指定しておくことで、viewファイル上でインスタンス変数に格納された情報を表示させることができる。
