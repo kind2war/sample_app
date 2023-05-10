@@ -1,20 +1,16 @@
 class ListsController < ApplicationController
   def new
-    # Viewへ渡すためのインスタンス変数に空のModelオブジェクトを生成する。
-    @list = List.new
+    @list = List.new  #Viewへ渡すためのインスタンス変数に空のModelオブジェクトを生成する。
   end
 
-  def create
-    #1.&2. データを受け取り、新規登録するためのインスタンス作成
-    list = List.new(list_params)
-      #newメソッドを呼び出され、引数でlist_paramasが呼び出されている。
-      #listに「@」が付かないのは、「ローカル変数」を利用して、createアクション処理をするためだから。
-      #復習:インスタンス変数とローカル変数の違い
-    #3.データをデータベースに保存するためのsaveメソッド実行
-    list.save
-    #4.詳細画面へリダイレクト
-    redirect_to list_path(list.id)
-  end # ここでcreateアクションの処理は終了！
+  def create       #1.&2. データを受け取り、新規登録するためのインスタンス作成
+    @list = List.new(list_params)       #newメソッドを呼び出され、引数でlist_paramasが呼び出されている。
+    if @list.save #3.データをデータベースに保存するためのsaveメソッド実行
+      redirect_to list_path(@list.id)   #もしも、バリデーションの結果、対象のカラムにデータが入力されていれば次のページへリダイレクトする。
+    else
+      render :new                       #もしも、データが入力されていなければ、新規投稿ページを再表示させる。
+    end
+  end              #ここでcreateアクションの処理は終了！
 
   def index # 一覧画面用のアクション
     @lists = List.all
@@ -44,14 +40,13 @@ class ListsController < ApplicationController
     redirect_to '/lists'
   end
 
-  private   #これは一種の境界線。「ここから下は、このcontrollerの中でしか呼び出せません」という意。
-           #他のアクション（index,show,edit）を巻き込まないよう、一番下のendのすぐ上に書くこと。
-  # ストロングパラメータ
-  def list_params # 脆弱性を防ぐセキュリティ
+  private   #これは一種の境界線。「ここから下は、このcontrollerの中でしか呼び出せません」という意。他のアクション（index,show,edit）を巻き込まないよう、一番下のendのすぐ上に書くこと。
+  def list_params #ストロングパラメータ.脆弱性を防ぐセキュリティ
     params.require(:list).permit(:title, :body, :image)
+  end
+end
     # paramsとは、formから送られてくるデータの容器。
     # 送られてきたデータの中から「:list」を指定し、データを絞り、
     # 保存を許可するカラム（:title,:body）を指定している。
     # これによって、「マスアサインメント脆弱性」を防ぐことができる。
-  end
-end
+
