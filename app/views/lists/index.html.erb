@@ -1,16 +1,32 @@
-<h1>投稿一覧</h1>
-<% @lists.each do |list| %>
- <!--コントローラで記述したインスタンス変数@listsが登場。-->
- <!--eachメソッド：配列やハッシュがもつ要素を順番に取得して処理を実行したいときに使う。-->
- <!--@lists.each と記述することで、Listレコードの数だけ繰り返し処理を行う。 -->
+<div class="list-wrap">
+ <% @lists.each do |list|%>
+  <div class="list-box">
+    <% if list.image.attached? %>
+      <%= image_tag list.image, size: "200x200" %>
+    <% else %>
+      <%= image_tag 'no_image', size: "200x200" %>
+    <% end %>
+    <div class="list-comment">
+      <span class="list-body"><%= list.body %></span>
+      <span class="list-title"><%=link_to list.title, list_path(list.id) %></span>
+    </div>
+  </div>
+ <% end %>
+</div>
 
-  <p>タイトル</p>
+<!-- <h1>投稿一覧</h1>
+ <!-- % @lists.each do |list| %>
+  <!--コントローラで記述したインスタンス変数@listsが登場。-->
+  <!--eachメソッド：配列やハッシュがもつ要素を順番に取得して処理を実行したいときに使う。-->
+  <!--@lists.each と記述することで、Listレコードの数だけ繰り返し処理を行う。 -->
+
+<!--  <p>タイトル</p>
   <span>
-   <%= link_to list.title, list_path(list.id) %>  <!--  link_to 表示させるテキスト , リンク先URL [,オプション] -->
-  </span>
+   <!-- %= link_to list.title, list_path(list.id) %>  <!--  link_to 表示させるテキスト , リンク先URL [,オプション] -->
+<!--  </span>
  <!--各レコードの内容は、listという変数に格納される。-->
  <!--list.[カラム名]と記述することで、レコードのカラムの内容が表示される。-->
 
-  <p>画像</p>
-<%= image_tag list.image, size: "200x200" %>
-<% end %>
+<!--  <p>画像</p>
+<!-- %= image_tag list.image, size: "200x200" %>
+<!--% end %>

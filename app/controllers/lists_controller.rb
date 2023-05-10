@@ -3,14 +3,15 @@ class ListsController < ApplicationController
     @list = List.new  #Viewへ渡すためのインスタンス変数に空のModelオブジェクトを生成する。
   end
 
-  def create       #1.&2. データを受け取り、新規登録するためのインスタンス作成
-    @list = List.new(list_params)       #newメソッドを呼び出され、引数でlist_paramasが呼び出されている。
-    if @list.save #3.データをデータベースに保存するためのsaveメソッド実行
-      redirect_to list_path(@list.id)   #もしも、バリデーションの結果、対象のカラムにデータが入力されていれば次のページへリダイレクトする。
+  def create                          #データを受け取り、新規登録するためのインスタンス作成
+    @list = List.new(list_params)     #newメソッドを呼び出され、引数でlist_paramasが呼び出されている。
+    if @list.save                     #データをデータベースに保存するためのsaveメソッド実行
+      flash[:notice]="投稿が成功しました"
+      redirect_to list_path(@list.id) #もしも、バリデーションの結果、対象のカラムにデータが入力されていれば次のページへリダイレクトする。
     else
-      render :new                       #もしも、データが入力されていなければ、新規投稿ページを再表示させる。
+      render :new                     #もしも、データが入力されていなければ、新規投稿ページを再表示させる。
     end
-  end              #ここでcreateアクションの処理は終了！
+  end                                 #ここでcreateアクションの処理は終了！
 
   def index # 一覧画面用のアクション
     @lists = List.all
