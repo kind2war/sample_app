@@ -38,12 +38,17 @@ class ListsController < ApplicationController
     redirect_to list_path(list.id)
   end
 
+  def destroy
+    list = List.find(params[:id])
+    list.destroy
+    redirect_to '/lists'
+  end
 
   private   #これは一種の境界線。「ここから下は、このcontrollerの中でしか呼び出せません」という意。
            #他のアクション（index,show,edit）を巻き込まないよう、一番下のendのすぐ上に書くこと。
   # ストロングパラメータ
   def list_params # 脆弱性を防ぐセキュリティ
-    params.require(:list).permit(:title, :body)
+    params.require(:list).permit(:title, :body, :image)
     # paramsとは、formから送られてくるデータの容器。
     # 送られてきたデータの中から「:list」を指定し、データを絞り、
     # 保存を許可するカラム（:title,:body）を指定している。
